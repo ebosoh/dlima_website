@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (counterElement) {
         const animateCounter = () => {
             const target = parseInt(counterElement.getAttribute('data-target'), 10);
-            const duration = 1800; // 1.8 seconds duration
+            const duration = 2800; // 2.8 seconds duration (slower counter)
             const startTime = performance.now();
             
             const updateCount = (currentTime) => {
