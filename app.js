@@ -417,4 +417,52 @@ document.addEventListener('DOMContentLoaded', () => {
         successCard.classList.add('d-none');
         contactForm.classList.remove('d-none');
     });
+
+    // ==========================================================================
+    // 9. Interactive Experience Counter Animation
+    // ==========================================================================
+    const counterElement = document.getElementById('exp-counter');
+    if (counterElement) {
+        const animateCounter = () => {
+            const target = parseInt(counterElement.getAttribute('data-target'), 10);
+            const duration = 1800; // 1.8 seconds duration
+            const startTime = performance.now();
+            
+            const updateCount = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Ease out quad formula: progress * (2 - progress)
+                const easeProgress = progress * (2 - progress);
+                const currentValue = Math.floor(easeProgress * target);
+                
+                counterElement.textContent = currentValue;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCount);
+                } else {
+                    counterElement.textContent = target; // Ensure it ends exactly at target
+                }
+            };
+            
+            requestAnimationFrame(updateCount);
+        };
+        
+        // Premium Intersection Observer trigger
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            observer.observe(counterElement);
+        } else {
+            // Fallback for older browsers
+            animateCounter();
+        }
+    }
 });
