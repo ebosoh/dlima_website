@@ -423,9 +423,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     const counterElement = document.getElementById('exp-counter');
     if (counterElement) {
+        let animationFrameId = null;
+        let animated = false;
+        
         const animateCounter = () => {
+            if (animated) return;
+            animated = true;
+            
             const target = parseInt(counterElement.getAttribute('data-target'), 10);
-            const duration = 2800; // 2.8 seconds duration (slower counter)
+            const duration = 2000; // 2 seconds duration (feels punchy and premium)
             const startTime = performance.now();
             
             const updateCount = (currentTime) => {
@@ -439,13 +445,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 counterElement.textContent = currentValue;
                 
                 if (progress < 1) {
-                    requestAnimationFrame(updateCount);
+                    animationFrameId = requestAnimationFrame(updateCount);
                 } else {
                     counterElement.textContent = target; // Ensure it ends exactly at target
                 }
             };
             
-            requestAnimationFrame(updateCount);
+            animationFrameId = requestAnimationFrame(updateCount);
         };
         
         // Premium Intersection Observer trigger
@@ -454,15 +460,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         animateCounter();
-                        observer.unobserve(entry.target);
+                        observer.unobserve(entry.target); // Stop observing once animated
                     }
                 });
-            }, { threshold: 0.3 });
+            }, { threshold: 0.05 }); // Lower threshold to ensure easy triggering
             
             observer.observe(counterElement);
         } else {
             // Fallback for older browsers
             animateCounter();
         }
+        
+        // Safety fallback: if it hasn't animated after 1.5 seconds, trigger it anyway
+        setTimeout(() => {
+            if (!animated) {
+                animateCounter();
+            }
+        }, 1500);
     }
 });
