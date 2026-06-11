@@ -1968,7 +1968,7 @@ img {
         text-shadow: none;
     }
     50%, 100% {
-        color: #01DFC9 !important;
-        text-shadow: 0 0 8px rgba(1, 223, 201, 0.7);
+        color: #FF6B00 !important;
+        text-shadow: 0 0 8px rgba(255, 107, 0, 0.8);
     }
 }
