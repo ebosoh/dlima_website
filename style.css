@@ -1957,9 +1957,46 @@ img {
     }
 }
 
-/* Digital Ticking Animation for the Events menu link */
+/* Digital Ticking & Moving Border Animation for the Events menu link */
 .events-link-ticking {
+    position: relative;
+    padding: 6px 14px !important;
+    margin: 0 4px;
+    z-index: 1;
     animation: digitalTick 1s infinite;
+}
+
+.events-link-ticking::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-sm);
+    /* Dual background clipping: inner content fills with nav background, border glows with moving gradient */
+    background: linear-gradient(var(--color-navbar-bg), var(--color-navbar-bg)) padding-box,
+                linear-gradient(135deg, #FF6B00 0%, transparent 35%, #FF6B00 50%, transparent 85%, #FF6B00 100%) border-box;
+    background-size: 100% 100%, 200% 200%;
+    pointer-events: none;
+    z-index: -1;
+    animation: borderGradientMove 2s linear infinite, digitalTickBorder 1s infinite;
+}
+
+@keyframes borderGradientMove {
+    0% {
+        background-position: 0% 0%, 0% 0%;
+    }
+    100% {
+        background-position: 0% 0%, 200% 200%;
+    }
+}
+
+@keyframes digitalTickBorder {
+    0%, 49.9% {
+        opacity: 0;
+    }
+    50%, 100% {
+        opacity: 1;
+    }
 }
 
 @keyframes digitalTick {
