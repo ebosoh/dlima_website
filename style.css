@@ -1956,3 +1956,19 @@ img {
         font-size: 32px;
     }
 }
+
+/* Digital Ticking Animation for the Events menu link */
+.events-link-ticking {
+    animation: digitalTick 1s infinite;
+}
+
+@keyframes digitalTick {
+    0%, 49.9% {
+        /* Keep default theme/hover color during first half-second */
+        text-shadow: none;
+    }
+    50%, 100% {
+        color: #01DFC9 !important;
+        text-shadow: 0 0 8px rgba(1, 223, 201, 0.7);
+    }
+}
