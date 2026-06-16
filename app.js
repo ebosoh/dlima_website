@@ -478,4 +478,70 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 1500);
     }
+
+    // ==========================================================================
+    // X. Video Advert Widget Controller
+    // ==========================================================================
+    const videoWidget = document.getElementById('video-advert-widget');
+    const advertVideo = document.getElementById('advert-video');
+    const closeWidgetBtn = document.getElementById('widget-close-btn');
+    const muteWidgetBtn = document.getElementById('widget-mute-btn');
+    const muteIcon = muteWidgetBtn ? muteWidgetBtn.querySelector('i') : null;
+
+    if (videoWidget && advertVideo) {
+        // Check if user dismissed the widget in this session
+        const isDismissed = sessionStorage.getItem('video-advert-dismissed');
+        if (isDismissed === 'true') {
+            videoWidget.style.display = 'none';
+        } else {
+            // Handle Close Action
+            if (closeWidgetBtn) {
+                closeWidgetBtn.addEventListener('click', () => {
+                    videoWidget.classList.add('dismissed');
+                    sessionStorage.setItem('video-advert-dismissed', 'true');
+                    // Pause video when dismissed to save bandwidth/CPU
+                    advertVideo.pause();
+                    // Remove from layout entirely after animation
+                    setTimeout(() => {
+                        videoWidget.style.display = 'none';
+                    }, 600); // Matches transition-smooth (0.4s-0.6s)
+                });
+            }
+
+            // Handle Mute/Unmute Toggle
+            if (muteWidgetBtn && muteIcon) {
+                muteWidgetBtn.addEventListener('click', () => {
+                    if (advertVideo.muted) {
+                        advertVideo.muted = false;
+                        muteIcon.className = 'fas fa-volume-up';
+                        muteWidgetBtn.setAttribute('aria-label', 'Mute Sound');
+                    } else {
+                        advertVideo.muted = true;
+                        muteIcon.className = 'fas fa-volume-mute';
+                        muteWidgetBtn.setAttribute('aria-label', 'Unmute Sound');
+                    }
+                });
+            }
+
+            // Browser Autoplay Policy Fallback handling
+            // Modern browsers block autoplay with sound. We ensure it starts muted.
+            advertVideo.muted = true; 
+            
+            // Programmatically trigger play in case browser blocked it
+            const playPromise = advertVideo.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log('Video autoplay failed or was prevented by browser:', error);
+                    // Autoplay fallback: retry playing on any user interaction
+                    const playOnInteraction = () => {
+                        advertVideo.play();
+                        document.removeEventListener('click', playOnInteraction);
+                        document.removeEventListener('touchstart', playOnInteraction);
+                    };
+                    document.addEventListener('click', playOnInteraction);
+                    document.addEventListener('touchstart', playOnInteraction);
+                });
+            }
+        }
+    }
 });
