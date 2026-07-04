@@ -257,6 +257,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const legalData = {
+        "terms": {
+            title: "Terms of Use",
+            content: `
+                <h3>1. Acceptance of Terms</h3>
+                <p>By accessing and using this website, you agree to comply with and be bound by these Terms of Use. If you do not agree to these terms, please do not use this website.</p>
+
+                <h3>2. Scope of Services & Disclaimer</h3>
+                <p>Dr. Melvin D'Lima provides dental practice consulting, certified NLP executive coaching, and career mentoring services. All information, resources, and articles published on this website are for general educational, strategic, and informational purposes only. They do not constitute clinical, financial, tax, legal, or licensed medical advice. Clients are encouraged to perform their own due diligence or consult with appropriate professional bodies (such as the KMPDC) before making business or health transitions.</p>
+
+                <h3>3. Intellectual Property</h3>
+                <p>All content on this website, including text, blogs, poems, logos, branding, graphics, and layout, is the intellectual property of Dr. Melvin D'Lima and TechBrain, unless otherwise noted. Unauthorized reproduction, distribution, or commercial exploitation of this material is strictly prohibited without prior written consent.</p>
+
+                <h3>4. Third-Party Links</h3>
+                <p>This website contains links to external, third-party sites (e.g., Dental Aptitude College, Naturally Patch Ltd, Progressive Credit, etc.). Dr. Melvin D'Lima does not own, control, or assume liability for the content, privacy policies, or practices of any third-party websites.</p>
+
+                <h3>5. Limitation of Liability</h3>
+                <p>In no event shall Dr. Melvin D'Lima, his affiliates, or TechBrain be liable for any direct, indirect, incidental, consequential, or special damages arising out of or in connection with your use of this website, its services, or reliance on any strategy described herein.</p>
+
+                <h3>6. Governing Law</h3>
+                <p>These terms are governed by and construed in accordance with the laws of Kenya. Any disputes arising under these terms shall be subject to the exclusive jurisdiction of the courts of Kenya.</p>
+            `
+        },
+        "privacy": {
+            title: "Privacy Policy",
+            content: `
+                <h3>1. Information We Collect</h3>
+                <p>We collect information you voluntarily provide when using our contact forms, subscribing to updates, or scheduling consulting sessions. This information may include your name, email address, phone number, and details related to your practice or coaching inquiry.</p>
+
+                <h3>2. How We Use Your Information</h3>
+                <p>We use the collected information solely to:
+                <ul>
+                    <li>Respond directly to your inquiries and support requests.</li>
+                    <li>Schedule and customize your coaching and consulting sessions.</li>
+                    <li>Send occasional newsletters, updates, or educational articles if you have opted in.</li>
+                </ul>
+                </p>
+
+                <h3>3. Data Storage & Protection</h3>
+                <p>Your privacy is paramount. All client information is stored securely on local hard disks and encrypted storage systems. We do not sell, trade, rent, or lease your personal information to third parties. Access to your personal data is restricted to authorized personnel managing your consultations.</p>
+
+                <h3>4. Cookies & Log Files</h3>
+                <p>This website may use standard cookies to improve your user experience, track page navigation, and capture basic web analytics (such as browser type and session duration). You can configure your browser to reject cookies, though some interactive elements of the website may change.</p>
+
+                <h3>5. Your Rights</h3>
+                <p>You have the right to request access to the personal data we hold about you, request corrections to inaccurate information, or request the deletion of your data from our systems. To exercise these rights, please email us directly at <strong>info@melvindlima.com</strong>.</p>
+
+                <h3>6. Changes to this Policy</h3>
+                <p>We reserve the right to modify this Privacy Policy at any time. Any changes will be posted on this page with an updated revision date.</p>
+            `
+        }
+    };
+
     // ==========================================================================
     // 6. Interactive Modal Handlers (Blogs & Poems)
     // ==========================================================================
@@ -272,6 +325,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const poemCloseBtn = document.getElementById('poem-modal-close');
     const modalPoemTitle = document.getElementById('modal-poem-title');
     const modalPoemBody = document.getElementById('modal-poem-body');
+
+    const legalModal = document.getElementById('legal-modal');
+    const legalCloseBtn = document.getElementById('legal-modal-close');
+    const modalLegalTitle = document.getElementById('modal-legal-title');
+    const modalLegalBody = document.getElementById('modal-legal-body');
+    const termsLink = document.getElementById('terms-link');
+    const privacyLink = document.getElementById('privacy-link');
 
     // Open Blog Modal
     document.querySelectorAll('.open-blog-btn').forEach(btn => {
@@ -321,6 +381,42 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = 'auto';
     });
 
+    // Open Legal Modal (Terms of Use)
+    if (termsLink) {
+        termsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const data = legalData["terms"];
+            if (data) {
+                modalLegalTitle.textContent = data.title;
+                modalLegalBody.innerHTML = data.content;
+                legalModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    }
+
+    // Open Legal Modal (Privacy Policy)
+    if (privacyLink) {
+        privacyLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const data = legalData["privacy"];
+            if (data) {
+                modalLegalTitle.textContent = data.title;
+                modalLegalBody.innerHTML = data.content;
+                legalModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    }
+
+    // Close Legal Modal
+    if (legalCloseBtn) {
+        legalCloseBtn.addEventListener('click', () => {
+            legalModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    }
+
     // Close modals on clicking overlay background
     window.addEventListener('click', (e) => {
         if (e.target === blogModal) {
@@ -329,6 +425,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (e.target === poemModal) {
             poemModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        if (e.target === legalModal) {
+            legalModal.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
     });
