@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "Don’t start a dental clinic in Kenya right now (Unless you understand this first)",
             date: "Wednesday, March 15, 2026",
             tag: "Clinic Startups",
-            img: "https://melvindlima.com/data/files/150326.jpg",
+            img: "images/150326.jpg",
             content: `
                 <p>The world feels unstable. The Middle East is on fire. Oil prices threaten to rise. Household budgets everywhere are tightening. When the cost of living rises, something has to give. Very often, dental care is the first thing people postpone.</p>
                 <p>So if you are a dentist thinking of opening a clinic today, the obvious advice might be this: <strong>Don’t do it.</strong></p>
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "Dentists — are you leaving your KMPDC licence to chance?",
             date: "Wednesday, April 15, 2026",
             tag: "Practice Strategy",
-            img: "https://melvindlima.com/data/files/dentist-4373290_1280.jpg",
+            img: "images/dentist-4373290_1280.jpg",
             content: `
                 <p>Regulatory compliance is the bedrock of clinical longevity. The Kenya Medical Practitioners and Dentists Council (KMPDC) enforces strict guidelines concerning facility standards, safety protocols, and professional credentialing.</p>
                 <p>Many clinic owners focus so heavily on patient acquisition and cosmetic dentistry that they leave basic licensing tasks to the last minute. This creates immense vulnerability. If an inspector walks into your facility, are your policies up to date?</p>
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "Navigating Pre-Election Strategies & Insurance Riders",
             date: "Friday, February 27, 2026",
             tag: "Finance & Insurance",
-            img: "https://melvindlima.com/data/files/150326.jpg",
+            img: "images/150326.jpg",
             content: `
                 <p>January and February are over. As you march into a new month as a dental clinic owner in Kenya, how did you score on navigating pre-election cycles and forecasted changes in dental insurance riders to medical policies?</p>
                 <p>These lessons were heavily reinforced during our recent breakfast meeting in Westlands organized alongside industry experts <strong>Martin Mutuku and Joyce Kayima, FCCA of Founders Freedom</strong>.</p>
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "If It Ain’t Broke, Don’t Fix It? Why That Phrase Is Dangerous",
             date: "Saturday, November 8, 2025",
             tag: "Practice Strategy",
-            img: "https://melvindlima.com/data/files/dentalclinicstartup.jpg",
+            img: "images/dentalclinicstartup.jpg",
             content: `
                 <p>In dentistry, waiting for a system to break down before upgrading is catastrophic. A sudden server crash during peak morning hours can corrupt digital patient records. A failing compressor can stall three active surgeries. An outdated accounting practice can mask cash flow leakages for months.</p>
                 <p>Proactive clinic audits and system redundancies are not luxuries; they are fundamental to scaling operations safely.</p>
