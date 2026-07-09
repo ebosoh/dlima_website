@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity SEO & GEO Analytics Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-base: #0b0f19;
+            --bg-surface: rgba(22, 28, 45, 0.4);
+            --bg-surface-elevated: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-primary: #8b5cf6; /* Electric Violet */
+            --accent-secondary: #06b6d4; /* Neon Cyan */
+            --accent-success: #10b981; /* Emerald Green */
+            --accent-warning: #f59e0b; /* Amber */
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --font-outfit: 'Outfit', sans-serif;
+            --font-inter: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-inter);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 40%);
+            padding-bottom: 3rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Glassmorphism Panel style */
+        .glass-panel {
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: var(--transition);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), var(--shadow-glow);
+        }
+
+        /* Header Layout */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem 2rem;
+        }
+
+        .header-title h1 {
+            font-family: var(--font-outfit);
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 30%, var(--accent-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-success);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-success);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 14px var(--accent-success); }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        /* Metrics Row */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .metric-card {
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0.7;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-family: var(--font-outfit);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #fff;
+        }
+
+        .metric-trend {
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .trend-up { color: var(--accent-success); }
+        .trend-down { color: var(--accent-warning); }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 968px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-box {
+            padding: 1.75rem;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-family: var(--font-outfit);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .chart-container {
+            flex-grow: 1;
+            position: relative;
+            height: 300px;
+        }
+
+        /* Logs Section */
+        .logs-section {
+            padding: 2rem;
+        }
+
+        .section-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-family: var(--font-outfit);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 1rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .badge-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--accent-success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .badge-warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--accent-warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .badge-info {
+            background-color: rgba(6, 182, 212, 0.1);
+            color: var(--accent-secondary);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .text-mono {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="glass-panel">
+            <div class="header-title">
+                <h1>Antigravity SEO & GEO Optimization</h1>
+                <p>Autonomous Search & LLM-Visibility Agent for Dr. Melvin D'Lima</p>
+            </div>
+            <div class="agent-status">
+                <div class="status-dot"></div>
+                <span>Antigravity Agent: Active</span>
+            </div>
+        </header>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+            <div class="metric-card glass-panel">
+                <p class="metric-label">Organic Traffic</p>
+                <h2 class="metric-value" id="val-traffic">-</h2>
+                <div class="metric-trend trend-up" id="trend-traffic">+0%</div>
+            </div>
+            <div class="metric-card glass-panel">
+                <p class="metric-label">Average Position</p>
+                <h2 class="metric-value" id="val-position">-</h2>
+                <div class="metric-trend trend-up" id="trend-position">-0.0</div>
+            </div>
+            <div class="metric-card glass-panel">
+                <p class="metric-label">GEO LLM Citations</p>
+                <h2 class="metric-value" id="val-citations">-</h2>
+                <div class="metric-trend trend-up" id="trend-citations">+0</div>
+            </div>
+            <div class="metric-card glass-panel">
+                <p class="metric-label">AI Brand Sentiment</p>
+                <h2 class="metric-value" id="val-sentiment">-</h2>
+                <div class="metric-trend trend-up" id="trend-sentiment">+0.0%</div>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+            <div class="chart-box glass-panel">
+                <div class="chart-header">
+                    <h2 class="chart-title">Organic Traffic & Keyword Position</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartTraffic"></canvas>
+                </div>
+            </div>
+            <div class="chart-box glass-panel">
+                <div class="chart-header">
+                    <h2 class="chart-title">GEO Citation Share & Sentiment</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartCitations"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Telemetry History -->
+        <div class="logs-section glass-panel">
+            <div class="section-header">
+                <h2 class="section-title">Telemetry Run Logs</h2>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Health Score</th>
+                            <th>Schema Status</th>
+                            <th>Entity Density</th>
+                            <th>Traffic (Est.)</th>
+                            <th>Avg. Position</th>
+                        </tr>
+                    </thead>
+                    <tbody id="telemetry-table-body">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('./seo_telemetry.json')
+                .then(res => res.json())
+                .then(data => {
+                    renderDashboard(data);
+                })
+                .catch(err => {
+                    console.error("Failed to load telemetry data", err);
+                    document.querySelector('.container').innerHTML += `
+                        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); padding: 1.5rem; border-radius: 8px; margin-top: 2rem; color: #ef4444; font-weight: 500;">
+                            Failed to load telemetry database (seo_telemetry.json). Ensure the file exists and is populated.
+                        </div>
+                    `;
+                });
+        });
+
+        function renderDashboard(data) {
+            if (!data || data.length === 0) return;
+            
+            const current = data[data.length - 1];
+            const previous = data.length > 1 ? data[data.length - 2] : current;
+
+            // Calculate metrics & trends
+            document.getElementById('val-traffic').innerText = current.organicTraffic.toLocaleString();
+            const trafficChange = (((current.organicTraffic - previous.organicTraffic) / Math.max(1, previous.organicTraffic)) * 100).toFixed(1);
+            document.getElementById('trend-traffic').innerText = `${trafficChange >= 0 ? '+' : ''}${trafficChange}%`;
+            document.getElementById('trend-traffic').className = `metric-trend ${trafficChange >= 0 ? 'trend-up' : 'trend-down'}`;
+
+            document.getElementById('val-position').innerText = current.averagePosition.toFixed(2);
+            const posChange = (current.averagePosition - previous.averagePosition).toFixed(2);
+            document.getElementById('trend-position').innerText = `${posChange >= 0 ? '+' : ''}${posChange}`;
+            document.getElementById('trend-position').className = `metric-trend ${posChange <= 0 ? 'trend-up' : 'trend-down'}`; // Lower position is better
+
+            document.getElementById('val-citations').innerText = current.llmCitations;
+            const citChange = current.llmCitations - previous.llmCitations;
+            document.getElementById('trend-citations').innerText = `${citChange >= 0 ? '+' : ''}${citChange}`;
+            document.getElementById('trend-citations').className = `metric-trend ${citChange >= 0 ? 'trend-up' : 'trend-down'}`;
+
+            document.getElementById('val-sentiment').innerText = `${current.aiBrandSentiment.toFixed(1)}%`;
+            const sentChange = (current.aiBrandSentiment - previous.aiBrandSentiment).toFixed(2);
+            document.getElementById('trend-sentiment').innerText = `${sentChange >= 0 ? '+' : ''}${sentChange}%`;
+            document.getElementById('trend-sentiment').className = `metric-trend ${sentChange >= 0 ? 'trend-up' : 'trend-down'}`;
+
+            // Populate table (latest first)
+            const tableBody = document.getElementById('telemetry-table-body');
+            const sortedData = [...data].reverse();
+            tableBody.innerHTML = sortedData.map(row => {
+                const schemaClass = row.schemaStatus === 'Complete' ? 'badge-success' : 'badge-warning';
+                return `
+                    <tr>
+                        <td class="text-mono">${row.date}</td>
+                        <td><span class="badge badge-success">${row.seoHealthScore}/100</span></td>
+                        <td><span class="badge ${schemaClass}">${row.schemaStatus}</span></td>
+                        <td class="text-mono">${row.entitiesDensity} / sentence</td>
+                        <td>${row.organicTraffic.toLocaleString()}</td>
+                        <td class="text-mono">${row.averagePosition.toFixed(2)}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Render Charts
+            renderCharts(data);
+        }
+
+        function renderCharts(data) {
+            const labels = data.map(r => r.date);
+            const trafficData = data.map(r => r.organicTraffic);
+            const positionData = data.map(r => r.averagePosition);
+            const citationData = data.map(r => r.llmCitations);
+            const sentimentData = data.map(r => r.aiBrandSentiment);
+
+            // Traffic Chart
+            const ctxTraffic = document.getElementById('chartTraffic').getContext('2d');
+            new Chart(ctxTraffic, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Organic Traffic',
+                            data: trafficData,
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.05)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Average Position',
+                            data: positionData,
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#9ca3af', font: { family: 'Outfit' } } }
+                    },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } },
+                        y: { type: 'linear', display: true, position: 'left', grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } },
+                        y1: { type: 'linear', display: true, position: 'right', reverse: true, grid: { drawOnChartArea: false }, ticks: { color: '#9ca3af' } }
+                    }
+                }
+            });
+
+            // Citations Chart
+            const ctxCitations = document.getElementById('chartCitations').getContext('2d');
+            new Chart(ctxCitations, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'LLM Citations',
+                            data: citationData,
+                            borderColor: '#06b6d4',
+                            backgroundColor: 'rgba(6, 182, 212, 0.05)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'AI Sentiment (%)',
+                            data: sentimentData,
+                            borderColor: '#10b981',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#9ca3af', font: { family: 'Outfit' } } }
+                    },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } },
+                        y: { type: 'linear', display: true, position: 'left', grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } },
+                        y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { color: '#9ca3af' } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

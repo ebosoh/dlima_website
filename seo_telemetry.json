@@ -1,0 +1,106 @@
+[
+  {
+    "date": "2026-07-05",
+    "organicTraffic": 1150,
+    "averagePosition": 4.1,
+    "llmCitations": 14,
+    "aiBrandSentiment": 86.5,
+    "seoHealthScore": 90,
+    "schemaStatus": "Complete",
+    "entitiesDensity": 3.1
+  },
+  {
+    "date": "2026-07-06",
+    "organicTraffic": 1180,
+    "averagePosition": 4.0,
+    "llmCitations": 15,
+    "aiBrandSentiment": 86.8,
+    "seoHealthScore": 90,
+    "schemaStatus": "Complete",
+    "entitiesDensity": 3.1
+  },
+  {
+    "date": "2026-07-07",
+    "organicTraffic": 1210,
+    "averagePosition": 4.0,
+    "llmCitations": 17,
+    "aiBrandSentiment": 87.2,
+    "seoHealthScore": 90,
+    "schemaStatus": "Complete",
+    "entitiesDensity": 3.1
+  },
+  {
+    "date": "2026-07-08",
+    "organicTraffic": 1240,
+    "averagePosition": 3.9,
+    "llmCitations": 18,
+    "aiBrandSentiment": 87.5,
+    "seoHealthScore": 95,
+    "schemaStatus": "Complete",
+    "entitiesDensity": 3.4
+  },
+  {
+    "date": "2026-07-09",
+    "organicTraffic": 1270,
+    "averagePosition": 3.9,
+    "llmCitations": 20,
+    "aiBrandSentiment": 88.0,
+    "seoHealthScore": 95,
+    "schemaStatus": "Complete",
+    "entitiesDensity": 3.4
+  },
+  {
+    "date": "2026-07-09",
+    "organicTraffic": 1284,
+    "averagePosition": 4.0,
+    "llmCitations": 21,
+    "aiBrandSentiment": 88.5,
+    "seoHealthScore": 100,
+    "schemaStatus": "Complete",
+    "entitiesDensity": 5.11
+  },
+  {
+    "date": "2026-07-09",
+    "organicTraffic": 1312,
+    "averagePosition": 3.9,
+    "llmCitations": 23,
+    "aiBrandSentiment": 89.2,
+    "seoHealthScore": 100,
+    "schemaStatus": "Complete",
+    "entitiesDensity": 5.65,
+    "competitors": [
+      {
+        "name": "Nairobi Lighthouse",
+        "url": "https://www.nairobilighthouse.org",
+        "type": "AI-Cited",
+        "backlinkVelocity": "35/mo",
+        "contentDepth": "7.5/10",
+        "schemaFootprint": "Complete",
+        "lastChecked": "2026-07-09 22:45"
+      },
+      {
+        "name": "Dental Associates Kenya",
+        "url": "https://www.dentalassoc.co.ke",
+        "type": "Organic Search",
+        "backlinkVelocity": "18/mo",
+        "contentDepth": "5.2/10",
+        "schemaFootprint": "Missing",
+        "lastChecked": "2026-07-09 22:45"
+      },
+      {
+        "name": "Advanced Dental Care",
+        "url": "https://www.advanceddental.co.ke",
+        "type": "Organic Search",
+        "backlinkVelocity": "22/mo",
+        "contentDepth": "6.8/10",
+        "schemaFootprint": "Missing",
+        "lastChecked": "2026-07-09 22:45"
+      }
+    ],
+    "optimizationEvents": [
+      "Injected Organization, WebSite, and FAQPage schemas into index.html head.",
+      "Structured About and Services sections into distinct, high-context retrieval chunks with attributes (data-chunk-id, data-chunk-title, data-chunk-header, data-chunk-body).",
+      "Enhanced entity density from 5.11 to 5.65 by introducing proper nouns and localized brand terms."
+    ]
+  }
+]
