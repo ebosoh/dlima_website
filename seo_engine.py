@@ -83,7 +83,7 @@ def audit_html():
         "totalEntities": len(entities)
     }
 
-def update_telemetry(audit_results):
+def update_telemetry(audit_results, competitors=None, optimization_events=None):
     existing_data = []
     if os.path.exists(TELEMETRY_PATH):
         try:
@@ -111,7 +111,9 @@ def update_telemetry(audit_results):
         "aiBrandSentiment": base_sentiment,
         "seoHealthScore": audit_results["score"],
         "schemaStatus": audit_results["schemaStatus"],
-        "entitiesDensity": audit_results["entityDensity"]
+        "entitiesDensity": audit_results["entityDensity"],
+        "competitors": competitors or [],
+        "optimizationEvents": optimization_events or []
     }
     
     existing_data.append(new_entry)
@@ -125,6 +127,7 @@ def update_telemetry(audit_results):
         
     print(f"Telemetry updated: {new_entry}")
     return new_entry
+
 
 def fetch_competitor_data():
     comp_data = []
@@ -168,6 +171,11 @@ if __name__ == '__main__':
     create_backup()
     audit = audit_html()
     print(f"Audit Results: {json.dumps(audit, indent=2)}")
-    update_telemetry(audit)
-    fetch_competitor_data()
+    comp_data = fetch_competitor_data()
+    opt_events = [
+        "Injected data-chunk-id, data-chunk-title, data-chunk-header, and data-chunk-body RAG retrieval attributes into Blogs Section and individual blog articles.",
+        "Injected RAG retrieval attributes into Contact Section.",
+        "Enhanced entity-per-sentence density by introducing proper nouns and localized brand terms."
+    ]
+    update_telemetry(audit, competitors=comp_data, optimization_events=opt_events)
     print("SEO & GEO Engine cycle finished successfully.")

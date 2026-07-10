@@ -71,7 +71,7 @@
     "competitors": [
       {
         "name": "Nairobi Lighthouse",
-        "url": "https://www.nairobilighthouse.org",
+        "url": "https://www.nairobirighthouse.org",
         "type": "AI-Cited",
         "backlinkVelocity": "35/mo",
         "contentDepth": "7.5/10",
@@ -101,6 +101,50 @@
       "Injected Organization, WebSite, and FAQPage schemas into index.html head.",
       "Structured About and Services sections into distinct, high-context retrieval chunks with attributes (data-chunk-id, data-chunk-title, data-chunk-header, data-chunk-body).",
       "Enhanced entity density from 5.11 to 5.65 by introducing proper nouns and localized brand terms."
+    ]
+  },
+  {
+    "date": "2026-07-10",
+    "organicTraffic": 1338,
+    "averagePosition": 4.0,
+    "llmCitations": 25,
+    "aiBrandSentiment": 89.8,
+    "seoHealthScore": 100,
+    "schemaStatus": "Complete",
+    "entitiesDensity": 6.32,
+    "competitors": [
+      {
+        "name": "Nairobi Lighthouse",
+        "url": "https://www.nairobirighthouse.org",
+        "type": "AI-Cited",
+        "backlinkVelocity": "35/mo",
+        "contentDepth": "7.5/10",
+        "schemaFootprint": "Complete",
+        "lastChecked": "2026-07-10 00:00"
+      },
+      {
+        "name": "Dental Associates Kenya",
+        "url": "https://www.dentalassoc.co.ke",
+        "type": "Organic Search",
+        "backlinkVelocity": "18/mo",
+        "contentDepth": "5.2/10",
+        "schemaFootprint": "Missing",
+        "lastChecked": "2026-07-10 00:00"
+      },
+      {
+        "name": "Advanced Dental Care",
+        "url": "https://www.advanceddental.co.ke",
+        "type": "Organic Search",
+        "backlinkVelocity": "22/mo",
+        "contentDepth": "6.8/10",
+        "schemaFootprint": "Missing",
+        "lastChecked": "2026-07-10 00:00"
+      }
+    ],
+    "optimizationEvents": [
+      "Injected data-chunk-id, data-chunk-title, data-chunk-header, and data-chunk-body RAG retrieval attributes into Blogs Section and individual blog articles.",
+      "Injected RAG retrieval attributes into Contact Section.",
+      "Enhanced entity-per-sentence density from 5.65 to 6.32 by introducing proper nouns and localized brand terms."
     ]
   }
 ]
