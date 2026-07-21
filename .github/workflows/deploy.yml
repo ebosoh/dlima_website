@@ -1,0 +1,42 @@
+name: Deploy to Custom Domain
+
+on:
+  push:
+    branches:
+      - main  # Set this to your default branch
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out source code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Step 2: Build your site (Modify as needed for React, Hugo, static files, etc.)
+      # If your site is raw HTML/CSS in the root, you can skip build steps.
+
+      # Step 3: Upload the deployment artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.' # Path to your build output folder (e.g., './dist' or '.')
+
+      # Step 4: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
