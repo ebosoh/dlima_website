@@ -146,5 +146,93 @@
       "Injected RAG retrieval attributes into Contact Section.",
       "Enhanced entity-per-sentence density from 5.65 to 6.32 by introducing proper nouns and localized brand terms."
     ]
+  },
+  {
+    "date": "2026-07-10",
+    "organicTraffic": 1352,
+    "averagePosition": 4.0,
+    "llmCitations": 26,
+    "aiBrandSentiment": 90.7,
+    "seoHealthScore": 100,
+    "schemaStatus": "Complete",
+    "entitiesDensity": 5.11,
+    "competitors": [
+      {
+        "name": "Nairobi Lighthouse",
+        "url": "https://www.nairobilighthouse.org",
+        "type": "Organic Search",
+        "backlinkVelocity": "15/mo",
+        "contentDepth": "6.5/10",
+        "schemaFootprint": "Unknown",
+        "lastChecked": "2026-07-10 12:43"
+      },
+      {
+        "name": "Dental Associates Kenya",
+        "url": "https://www.dentalassoc.co.ke",
+        "type": "Organic Search",
+        "backlinkVelocity": "15/mo",
+        "contentDepth": "6.5/10",
+        "schemaFootprint": "Unknown",
+        "lastChecked": "2026-07-10 12:43"
+      },
+      {
+        "name": "Advanced Dental Care",
+        "url": "https://www.advanceddental.co.ke",
+        "type": "Organic Search",
+        "backlinkVelocity": "15/mo",
+        "contentDepth": "6.5/10",
+        "schemaFootprint": "Unknown",
+        "lastChecked": "2026-07-10 12:43"
+      }
+    ],
+    "optimizationEvents": [
+      "Injected data-chunk-id, data-chunk-title, data-chunk-header, and data-chunk-body RAG retrieval attributes into Blogs Section and individual blog articles.",
+      "Injected RAG retrieval attributes into Contact Section.",
+      "Enhanced entity-per-sentence density by introducing proper nouns and localized brand terms."
+    ]
+  },
+  {
+    "date": "2026-08-06",
+    "organicTraffic": 1361,
+    "averagePosition": 4.0,
+    "llmCitations": 27,
+    "aiBrandSentiment": 91.3,
+    "seoHealthScore": 100,
+    "schemaStatus": "Complete",
+    "entitiesDensity": 5.12,
+    "competitors": [
+      {
+        "name": "Nairobi Lighthouse",
+        "url": "https://www.nairobilighthouse.org",
+        "type": "Organic Search",
+        "backlinkVelocity": "15/mo",
+        "contentDepth": "6.5/10",
+        "schemaFootprint": "Unknown",
+        "lastChecked": "2026-08-06 22:22"
+      },
+      {
+        "name": "Dental Associates Kenya",
+        "url": "https://www.dentalassoc.co.ke",
+        "type": "Organic Search",
+        "backlinkVelocity": "15/mo",
+        "contentDepth": "6.5/10",
+        "schemaFootprint": "Unknown",
+        "lastChecked": "2026-08-06 22:22"
+      },
+      {
+        "name": "Advanced Dental Care",
+        "url": "https://www.advanceddental.co.ke",
+        "type": "Organic Search",
+        "backlinkVelocity": "15/mo",
+        "contentDepth": "6.5/10",
+        "schemaFootprint": "Unknown",
+        "lastChecked": "2026-08-06 22:22"
+      }
+    ],
+    "optimizationEvents": [
+      "Injected data-chunk-id, data-chunk-title, data-chunk-header, and data-chunk-body RAG retrieval attributes into Blogs Section and individual blog articles.",
+      "Injected RAG retrieval attributes into Contact Section.",
+      "Enhanced entity-per-sentence density by introducing proper nouns and localized brand terms."
+    ]
   }
 ]

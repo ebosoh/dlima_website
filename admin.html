@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Management Portal | Dr. Melvin D'Lima Advisory</title>
+    <meta name="robots" content="noindex, nofollow">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style CSS & Admin CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-body">
+
+    <!-- Auth Overlay (Passcode Protected) -->
+    <div id="admin-auth-overlay" class="auth-overlay">
+        <div class="auth-card">
+            <div class="auth-brand">
+                <div class="auth-logo"><i class="fas fa-user-shield"></i></div>
+                <h2>Executive Portal Login</h2>
+                <p>Dr. Melvin D'Lima Strategy & Advisory Admin Backend</p>
+            </div>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-passcode"><i class="fas fa-lock"></i> Admin Passcode</label>
+                    <input type="password" id="admin-passcode" placeholder="Enter security passcode" required autocomplete="current-password">
+                </div>
+                <div id="login-error-msg" class="auth-error d-none">
+                    <i class="fas fa-exclamation-circle"></i> Invalid security passcode. Please try again.
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-right-to-bracket"></i> Authenticate & Enter Portal
+                </button>
+            </form>
+            <div class="auth-footer">
+                <p><i class="fas fa-info-circle"></i> Default passcode: <code>admin123</code></p>
+                <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Return to Main Website</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin App Container -->
+    <div id="admin-app" class="admin-app-container d-none">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <img src="logo.jpg" alt="Dr. Melvin D'Lima Logo" class="admin-logo">
+                <div class="brand-text">
+                    <span class="brand-name">Dr. Melvin D'Lima</span>
+                    <span class="brand-title">Blog CMS Portal</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-tab="dashboard">
+                    <i class="fas fa-chart-pie"></i> Overview
+                </a>
+                <a href="#editor-section" class="nav-item" data-tab="editor">
+                    <i class="fas fa-pen-nib"></i> Create Article
+                </a>
+                <a href="#articles-section" class="nav-item" data-tab="articles">
+                    <i class="fas fa-newspaper"></i> Manage Articles
+                </a>
+                <a href="index.html" target="_blank" class="nav-item">
+                    <i class="fas fa-external-link-alt"></i> View Live Site
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <i class="fas fa-user-check"></i>
+                    <div>
+                        <strong>Administrator</strong>
+                        <small>Authenticated Session</small>
+                    </div>
+                </div>
+                <button id="admin-logout-btn" class="btn btn-sm btn-outline-danger" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="admin-main">
+            
+            <!-- Top Header Bar -->
+            <header class="admin-topbar">
+                <div class="topbar-title">
+                    <h1 id="topbar-heading">Blog Strategy Dashboard</h1>
+                    <span class="badge badge-gold">Advisory Backend</span>
+                </div>
+                <div class="topbar-actions">
+                    <button id="btn-quick-new" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i> New Article
+                    </button>
+                </div>
+            </header>
+
+            <!-- Notification Toast Container -->
+            <div id="admin-toast-container" class="toast-container"></div>
+
+            <!-- Tab Content 1: Dashboard Stats & Overview -->
+            <section id="tab-dashboard" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-navy"><i class="fas fa-newspaper"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-total-articles">0</span>
+                            <span class="stat-label">Total Articles</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-emerald"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-published-articles">0</span>
+                            <span class="stat-label">Published Articles</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-gold"><i class="fas fa-tags"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="stat-total-categories">3</span>
+                            <span class="stat-label">Article Categories</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-purple"><i class="fas fa-server"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-value">Port 8001</span>
+                            <span class="stat-label">Backend REST Status</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Articles List Preview -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-clock"></i> Recent Strategy Publications</h2>
+                        <button class="btn btn-sm btn-secondary" onclick="switchAdminTab('articles')">View All</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-articles-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab Content 2: Article Editor (Create / Edit) -->
+            <section id="tab-editor" class="tab-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2 id="editor-title-heading"><i class="fas fa-plus-circle"></i> Create New Strategy Article</h2>
+                        <button id="btn-cancel-edit" class="btn btn-sm btn-secondary d-none">
+                            <i class="fas fa-times"></i> Cancel Edit Mode
+                        </button>
+                    </div>
+                    <div class="panel-body">
+                        <form id="article-form">
+                            <input type="hidden" id="article-edit-id" value="">
+
+                            <div class="form-row">
+                                <div class="form-group col-8">
+                                    <label for="article-title">Article Title <span class="req">*</span></label>
+                                    <input type="text" id="article-title" class="form-control" placeholder="e.g. Navigating Healthcare System Scalability in East Africa" required>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="article-tag">Category / Tag <span class="req">*</span></label>
+                                    <select id="article-tag" class="form-control" required>
+                                        <option value="Clinic Startups">Clinic Startups</option>
+                                        <option value="Practice Strategy" selected>Practice Strategy</option>
+                                        <option value="Finance & Insurance">Finance & Insurance</option>
+                                        <option value="Healthcare Leadership">Healthcare Leadership</option>
+                                        <option value="Regulatory Compliance">Regulatory Compliance</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <label for="article-date">Display Publication Date <span class="req">*</span></label>
+                                    <input type="text" id="article-date" class="form-control" placeholder="e.g. Wednesday, August 06, 2026" required>
+                                    <small class="form-hint">Format e.g. "Wednesday, March 15, 2026" or pick today's date automatically.</small>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="article-status">Publication Status</label>
+                                    <select id="article-status" class="form-control">
+                                        <option value="published" selected>Published (Visible on site)</option>
+                                        <option value="draft">Draft (Saved in admin)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Image Upload Section -->
+                            <div class="form-group">
+                                <label><i class="fas fa-image"></i> Article Cover Image <span class="req">*</span></label>
+                                <div class="image-upload-wrapper">
+                                    <div class="upload-dropzone" id="upload-dropzone">
+                                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                        <p>Drag & drop cover image here, or <strong>click to browse</strong></p>
+                                        <span class="upload-hint">Supports JPG, PNG, WEBP. Max file size: 5MB</span>
+                                        <input type="file" id="cover-image-input" accept="image/*" class="d-none">
+                                    </div>
+                                    <div class="upload-preview-container d-none" id="upload-preview-container">
+                                        <img id="upload-preview-img" src="" alt="Cover Image Preview">
+                                        <div class="upload-preview-info">
+                                            <span id="upload-preview-name" class="img-filename">150326.jpg</span>
+                                            <div class="preview-actions">
+                                                <button type="button" id="btn-change-image" class="btn btn-xs btn-secondary">
+                                                    <i class="fas fa-exchange-alt"></i> Change Image
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="article-img-filename" value="150326.jpg">
+                            </div>
+
+                            <!-- Excerpt Summary -->
+                            <div class="form-group">
+                                <label for="article-excerpt">Short Summary / Excerpt (Displayed on Grid Card) <span class="req">*</span></label>
+                                <textarea id="article-excerpt" class="form-control" rows="2" placeholder="Brief 2-3 sentence overview for the card summary..." required></textarea>
+                            </div>
+
+                            <!-- Rich Article HTML Content Editor -->
+                            <div class="form-group">
+                                <label for="article-content">Full Article Content (HTML Body) <span class="req">*</span></label>
+                                
+                                <!-- Editor Formatting Toolbar -->
+                                <div class="editor-toolbar">
+                                    <button type="button" class="toolbar-btn" data-tag="h3" title="Add Subheading (H3)">
+                                        <i class="fas fa-heading"></i> H3
+                                    </button>
+                                    <button type="button" class="toolbar-btn" data-tag="p" title="Add Paragraph">
+                                        <i class="fas fa-paragraph"></i> Paragraph
+                                    </button>
+                                    <button type="button" class="toolbar-btn" data-tag="strong" title="Bold Text">
+                                        <i class="fas fa-bold"></i> Bold
+                                    </button>
+                                    <button type="button" class="toolbar-btn" data-tag="ul" title="Unordered Bullet List">
+                                        <i class="fas fa-list-ul"></i> Bullet List
+                                    </button>
+                                    <button type="button" class="toolbar-btn" data-tag="ol" title="Numbered List">
+                                        <i class="fas fa-list-ol"></i> Numbered List
+                                    </button>
+                                    <button type="button" class="toolbar-btn" data-tag="blockquote" title="Add Callout Quote">
+                                        <i class="fas fa-quote-right"></i> Quote Block
+                                    </button>
+                                    <button type="button" class="toolbar-btn" data-tag="callout-tip" title="Add Strategic Tip Box">
+                                        <i class="fas fa-lightbulb"></i> Tip Box
+                                    </button>
+                                </div>
+
+                                <textarea id="article-content" class="form-control code-editor" rows="12" placeholder="Write or paste your article content HTML here..." required></textarea>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="form-actions">
+                                <button type="button" id="btn-preview-article" class="btn btn-secondary">
+                                    <i class="fas fa-eye"></i> Live Modal Preview
+                                </button>
+                                <button type="submit" id="btn-save-article" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Publish Strategy Article
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab Content 3: Manage Articles List -->
+            <section id="tab-articles" class="tab-content">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-list"></i> All Articles Repository</h2>
+                        <div class="panel-tools">
+                            <input type="text" id="admin-article-search" class="form-control form-control-sm" placeholder="Search by title or category...">
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 70px;">ID</th>
+                                        <th>Image</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th style="width: 140px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="all-articles-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Live Preview Modal -->
+    <div id="preview-modal" class="modal-overlay d-none">
+        <div class="modal-card">
+            <button id="preview-modal-close" class="modal-close"><i class="fas fa-times"></i></button>
+            <div class="modal-badge-bar">
+                <span id="preview-blog-tag" class="blog-tag">Practice Strategy</span>
+                <span id="preview-blog-date" class="blog-date">August 06, 2026</span>
+            </div>
+            <h2 id="preview-blog-title">Article Preview Title</h2>
+            <div class="preview-hero-img-wrap">
+                <img id="preview-blog-img" src="150326.jpg" alt="Cover Preview">
+            </div>
+            <div id="preview-blog-body" class="blog-modal-body">
+                <!-- Content inserted dynamically -->
+            </div>
+            <div class="modal-footer-bar">
+                <button type="button" class="btn btn-secondary" onclick="closePreviewModal()">Close Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin JS -->
+    <script src="admin.js"></script>
+</body>
+</html>

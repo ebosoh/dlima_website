@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // 5. Data Repositories (Blogs & Poems)
     // ==========================================================================
-    const blogsData = {
+    let blogsData = {
         "1": {
             title: "Don’t start a dental clinic in Kenya right now (Unless you understand this first)",
             date: "Wednesday, March 15, 2026",
@@ -226,6 +226,74 @@ document.addEventListener('DOMContentLoaded', () => {
             `
         }
     };
+
+    // Load blogs dynamically from server API or local blogs.json file
+    async function fetchDynamicBlogs() {
+        try {
+            let res = await fetch('/api/blogs');
+            if (!res.ok) throw new Error('API fetch failed');
+            const list = await res.json();
+            if (Array.isArray(list) && list.length > 0) {
+                updateBlogsFromList(list);
+            }
+        } catch (e) {
+            try {
+                let res = await fetch('blogs.json');
+                if (res.ok) {
+                    const list = await res.json();
+                    if (Array.isArray(list) && list.length > 0) {
+                        updateBlogsFromList(list);
+                    }
+                }
+            } catch (err) {
+                console.log('Using default inline blogs repository');
+            }
+        }
+    }
+
+    function updateBlogsFromList(list) {
+        blogsData = {};
+        const grid = document.getElementById('blogs-grid');
+        let html = '';
+
+        list.forEach(article => {
+            if (article.status && article.status !== 'published') return;
+            const id = String(article.id);
+            blogsData[id] = {
+                title: article.title,
+                date: article.date,
+                tag: article.tag,
+                img: article.img || '150326.jpg',
+                content: article.content
+            };
+
+            const cat = article.category || ((article.tag || '').toLowerCase().includes('startup') ? 'startup' : (((article.tag || '').toLowerCase().includes('insurance') ? 'insurance' : 'strategy')));
+            const searchTitle = (article.title || '').toLowerCase();
+            const excerpt = article.excerpt || (article.content ? article.content.replace(/<[^>]+>/g, '').substring(0, 180) + '...' : '');
+
+            html += `
+                <article class="blog-card" data-category="${cat}" data-title="${searchTitle}">
+                    <div class="blog-image">
+                        <img src="${article.img || '150326.jpg'}" alt="${article.title}">
+                        <span class="blog-tag">${article.tag || 'Strategy'}</span>
+                    </div>
+                    <div class="blog-body">
+                        <span class="blog-date">${article.date}</span>
+                        <h3>${article.title}</h3>
+                        <p>${excerpt}</p>
+                        <button class="btn btn-text open-blog-btn" data-blog-id="${id}">Read Strategic Outline <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </article>
+            `;
+        });
+
+        if (grid && html) {
+            grid.innerHTML = html;
+            rebindBlogModalButtons();
+        }
+    }
+
+    fetchDynamicBlogs();
 
     const poemsData = {
         "1": {
@@ -334,24 +402,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const privacyLink = document.getElementById('privacy-link');
 
     // Open Blog Modal
-    document.querySelectorAll('.open-blog-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const blogId = btn.getAttribute('data-blog-id');
-            const data = blogsData[blogId];
-            
-            if (data) {
-                modalBlogTitle.textContent = data.title;
-                modalBlogDate.textContent = data.date;
-                modalBlogTag.textContent = data.tag;
-                modalBlogImg.src = data.img;
-                modalBlogImg.alt = data.title;
-                modalBlogBody.innerHTML = data.content;
+    function rebindBlogModalButtons() {
+        document.querySelectorAll('.open-blog-btn').forEach(btn => {
+            // Remove previous listener by replacing element or adding single event listener
+            btn.onclick = () => {
+                const blogId = btn.getAttribute('data-blog-id');
+                const data = blogsData[blogId];
                 
-                blogModal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // prevent scrolling
-            }
+                if (data) {
+                    modalBlogTitle.textContent = data.title;
+                    modalBlogDate.textContent = data.date;
+                    modalBlogTag.textContent = data.tag;
+                    modalBlogImg.src = data.img;
+                    modalBlogImg.alt = data.title;
+                    modalBlogBody.innerHTML = data.content;
+                    
+                    blogModal.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // prevent scrolling
+                }
+            };
         });
-    });
+    }
+    rebindBlogModalButtons();
 
     // Close Blog Modal
     blogCloseBtn.addEventListener('click', () => {
@@ -460,7 +532,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function filterBlogs() {
-        blogCards.forEach(card => {
+        const currentCards = document.querySelectorAll('.blog-card');
+        currentCards.forEach(card => {
             const category = card.getAttribute('data-category');
             const title = card.getAttribute('data-title');
             
