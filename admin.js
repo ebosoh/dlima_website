@@ -3,17 +3,53 @@
  */
 
 const API_BASE = ''; // Same origin or relative path e.g. http://localhost:8001
+let APPS_SCRIPT_URL = localStorage.getItem('dlima_apps_script_url') || '';
 let articlesData = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     initAuth();
     initNavigation();
+    initAppsScriptConfig();
     initForm();
     initEditorToolbar();
     initImageUploader();
     initSearch();
     setDefaultDate();
 });
+
+function initAppsScriptConfig() {
+    const btnConfig = document.getElementById('btn-config-appscript');
+    const banner = document.getElementById('appscript-config-banner');
+    const input = document.getElementById('appscript-url-input');
+    const btnSave = document.getElementById('btn-save-appscript-url');
+
+    if (input && APPS_SCRIPT_URL) {
+        input.value = APPS_SCRIPT_URL;
+    }
+
+    if (btnConfig && banner) {
+        btnConfig.addEventListener('click', () => {
+            banner.classList.toggle('d-none');
+        });
+    }
+
+    if (btnSave && input) {
+        btnSave.addEventListener('click', () => {
+            const url = input.value.trim();
+            if (url) {
+                localStorage.setItem('dlima_apps_script_url', url);
+                APPS_SCRIPT_URL = url;
+                showToast('Google Apps Script URL saved successfully!', 'success');
+                banner.classList.add('d-none');
+                loadArticles();
+            } else {
+                localStorage.removeItem('dlima_apps_script_url');
+                APPS_SCRIPT_URL = '';
+                showToast('Apps Script URL cleared.', 'info');
+            }
+        });
+    }
+}
 
 /* ==========================================================================
    1. Authentication & Session Management
@@ -38,6 +74,25 @@ function initAuth() {
         e.preventDefault();
         const passcode = document.getElementById('admin-passcode').value.trim();
 
+        if (APPS_SCRIPT_URL) {
+            try {
+                const res = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'login', passcode })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    localStorage.setItem('dlima_admin_token', 'admin_authenticated_session');
+                    errorMsg.classList.add('d-none');
+                    showApp();
+                    showToast('Authenticated via Google Apps Script!', 'success');
+                    return;
+                }
+            } catch (err) {
+                console.warn('Apps Script login check error:', err);
+            }
+        }
+
         try {
             const res = await fetch(`${API_BASE}/api/login`, {
                 method: 'POST',
@@ -60,7 +115,7 @@ function initAuth() {
                 localStorage.setItem('dlima_admin_token', 'admin_authenticated_session');
                 errorMsg.classList.add('d-none');
                 showApp();
-                showToast('Authenticated in offline mode.', 'info');
+                showToast('Authenticated in static mode.', 'info');
             } else {
                 errorMsg.classList.remove('d-none');
             }
@@ -129,6 +184,23 @@ function switchAdminTab(tabName) {
    3. Data Fetching & Table Rendering
    ========================================================================== */
 async function loadArticles() {
+    if (APPS_SCRIPT_URL) {
+        try {
+            const res = await fetch(`${APPS_SCRIPT_URL}?action=getBlogs`);
+            if (res.ok) {
+                const list = await res.json();
+                if (Array.isArray(list)) {
+                    articlesData = list;
+                    renderStats();
+                    renderTables();
+                    return;
+                }
+            }
+        } catch (err) {
+            console.warn('Apps Script load error, falling back:', err);
+        }
+    }
+
     try {
         const res = await fetch(`${API_BASE}/api/blogs`);
         if (!res.ok) throw new Error('API fetch failed');
@@ -256,6 +328,26 @@ async function handleFormSubmit(e) {
 
     const payload = { title, tag, date, status, img, excerpt, content };
 
+    if (APPS_SCRIPT_URL) {
+        try {
+            const action = editId ? 'updateBlog' : 'createBlog';
+            const res = await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action, id: editId, ...payload })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast(editId ? 'Article updated on Google Sheet!' : 'New article published to Google Sheet!', 'success');
+                resetForm();
+                await loadArticles();
+                switchAdminTab('articles');
+                return;
+            }
+        } catch (err) {
+            console.warn('Apps Script save error:', err);
+        }
+    }
+
     try {
         let res;
         if (editId) {
@@ -332,6 +424,23 @@ function editArticle(id) {
 
 async function deleteArticle(id) {
     if (!confirm(`Are you sure you want to delete article #${id}? This action cannot be undone.`)) return;
+
+    if (APPS_SCRIPT_URL) {
+        try {
+            const res = await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'deleteBlog', id })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('Article deleted from Google Sheet.', 'info');
+                await loadArticles();
+                return;
+            }
+        } catch (err) {
+            console.warn('Apps Script delete error:', err);
+        }
+    }
 
     try {
         const res = await fetch(`${API_BASE}/api/blogs/${id}`, { method: 'DELETE' });

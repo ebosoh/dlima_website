@@ -94,12 +94,38 @@
                     <h1 id="topbar-heading">Blog Strategy Dashboard</h1>
                     <span class="badge badge-gold">Advisory Backend</span>
                 </div>
-                <div class="topbar-actions">
+                <div class="topbar-actions" style="display: flex; gap: 10px; align-items: center;">
+                    <button id="btn-config-appscript" class="btn btn-secondary" title="Configure Google Apps Script URL">
+                        <i class="fab fa-google"></i> Apps Script URL
+                    </button>
                     <button id="btn-quick-new" class="btn btn-primary">
                         <i class="fas fa-plus-circle"></i> New Article
                     </button>
                 </div>
             </header>
+
+            <!-- Apps Script Config Modal / Banner -->
+            <div id="appscript-config-banner" class="panel d-none" style="margin-bottom: 20px; border: 1px solid #01dfc9; background: rgba(1, 223, 201, 0.05);">
+                <div class="panel-header" style="background: transparent;">
+                    <h2><i class="fab fa-google" style="color: #01dfc9;"></i> Connect Google Apps Script Web App Backend</h2>
+                    <button class="btn btn-xs btn-secondary" onclick="document.getElementById('appscript-config-banner').classList.add('d-none')"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="panel-body">
+                    <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 12px;">
+                        Paste your deployed <strong>Google Apps Script Web App URL</strong> below to connect your Admin Portal directly to your Google Sheets database:
+                    </p>
+                    <div class="form-row" style="margin-bottom: 0;">
+                        <div class="form-group col-8" style="margin-bottom: 0;">
+                            <input type="url" id="appscript-url-input" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
+                        </div>
+                        <div class="form-group col-4" style="margin-bottom: 0;">
+                            <button id="btn-save-appscript-url" class="btn btn-primary btn-block">
+                                <i class="fas fa-save"></i> Save & Connect
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Notification Toast Container -->
             <div id="admin-toast-container" class="toast-container"></div>

@@ -227,8 +227,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Load blogs dynamically from server API or local blogs.json file
+    // Load blogs dynamically from Google Apps Script, server API, or local blogs.json file
     async function fetchDynamicBlogs() {
+        const appsScriptUrl = localStorage.getItem('dlima_apps_script_url');
+        if (appsScriptUrl) {
+            try {
+                let res = await fetch(`${appsScriptUrl}?action=getBlogs`);
+                if (res.ok) {
+                    const list = await res.json();
+                    if (Array.isArray(list) && list.length > 0) {
+                        updateBlogsFromList(list);
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.warn('Apps Script fetch failed, falling back:', err);
+            }
+        }
+
         try {
             let res = await fetch('/api/blogs');
             if (!res.ok) throw new Error('API fetch failed');
