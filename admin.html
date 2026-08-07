@@ -37,7 +37,6 @@
                 </button>
             </form>
             <div class="auth-footer">
-                <p><i class="fas fa-info-circle"></i> Default passcode: <code>admin123</code></p>
                 <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Return to Main Website</a>
             </div>
         </div>
@@ -114,13 +113,25 @@
                     <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 12px;">
                         Paste your deployed <strong>Google Apps Script Web App URL</strong> below to connect your Admin Portal directly to your Google Sheets database:
                     </p>
-                    <div class="form-row" style="margin-bottom: 0;">
+                    <div class="form-row" style="margin-bottom: 16px;">
                         <div class="form-group col-8" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem; color: #94a3b8;">Google Apps Script Web App URL</label>
                             <input type="url" id="appscript-url-input" class="form-control" placeholder="https://script.google.com/macros/s/.../exec">
                         </div>
-                        <div class="form-group col-4" style="margin-bottom: 0;">
+                        <div class="form-group col-4" style="margin-bottom: 0; display: flex; align-items: flex-end;">
                             <button id="btn-save-appscript-url" class="btn btn-primary btn-block">
                                 <i class="fas fa-save"></i> Save & Connect
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-bottom: 0; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px;">
+                        <div class="form-group col-8" style="margin-bottom: 0;">
+                            <label style="font-size: 0.8rem; color: #94a3b8;">Custom Security Passcode</label>
+                            <input type="password" id="custom-passcode-input" class="form-control" placeholder="Enter new private admin passcode">
+                        </div>
+                        <div class="form-group col-4" style="margin-bottom: 0; display: flex; align-items: flex-end;">
+                            <button id="btn-save-custom-passcode" class="btn btn-secondary btn-block">
+                                <i class="fas fa-key"></i> Update Passcode
                             </button>
                         </div>
                     </div>

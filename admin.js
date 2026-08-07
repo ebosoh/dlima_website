@@ -22,6 +22,8 @@ function initAppsScriptConfig() {
     const banner = document.getElementById('appscript-config-banner');
     const input = document.getElementById('appscript-url-input');
     const btnSave = document.getElementById('btn-save-appscript-url');
+    const passcodeBtn = document.getElementById('btn-save-custom-passcode');
+    const passcodeInput = document.getElementById('custom-passcode-input');
 
     if (input && APPS_SCRIPT_URL) {
         input.value = APPS_SCRIPT_URL;
@@ -49,6 +51,20 @@ function initAppsScriptConfig() {
             }
         });
     }
+
+    if (passcodeBtn && passcodeInput) {
+        passcodeBtn.addEventListener('click', () => {
+            const newCode = passcodeInput.value.trim();
+            if (newCode) {
+                localStorage.setItem('dlima_admin_passcode', newCode);
+                showToast('Security passcode updated successfully!', 'success');
+                passcodeInput.value = '';
+                banner.classList.add('d-none');
+            } else {
+                showToast('Please enter a valid passcode.', 'warning');
+            }
+        });
+    }
 }
 
 /* ==========================================================================
@@ -73,6 +89,7 @@ function initAuth() {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const passcode = document.getElementById('admin-passcode').value.trim();
+        const configuredPasscode = localStorage.getItem('dlima_admin_passcode') || 'admin123';
 
         if (APPS_SCRIPT_URL) {
             try {
@@ -110,12 +127,12 @@ function initAuth() {
                 errorMsg.classList.remove('d-none');
             }
         } catch (err) {
-            // Fallback for offline / static server authentication
-            if (passcode === 'admin123') {
+            // Fallback for static browser authentication
+            if (passcode === configuredPasscode) {
                 localStorage.setItem('dlima_admin_token', 'admin_authenticated_session');
                 errorMsg.classList.add('d-none');
                 showApp();
-                showToast('Authenticated in static mode.', 'info');
+                showToast('Authenticated successfully.', 'success');
             } else {
                 errorMsg.classList.remove('d-none');
             }
