@@ -89,7 +89,7 @@ function initAuth() {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const passcode = document.getElementById('admin-passcode').value.trim();
-        const configuredPasscode = localStorage.getItem('dlima_admin_passcode') || 'admin123';
+        const configuredPasscode = localStorage.getItem('dlima_admin_passcode') || 'dlima_admin_102026';
 
         if (APPS_SCRIPT_URL) {
             try {

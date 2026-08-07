@@ -11,7 +11,7 @@ from datetime import datetime
 PORT = 8001
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BLOGS_FILE = os.path.join(BASE_DIR, 'blogs.json')
-ADMIN_PASSCODE = "admin123"
+ADMIN_PASSCODE = "dlima_admin_102026"
 
 class DlimaRequestHandler(SimpleHTTPRequestHandler):
     def end_headers(self):

@@ -13,7 +13,7 @@
 
 const SPREADSHEET_ID = "YOUR_GOOGLE_SHEET_ID_HERE"; // Insert your Google Sheet ID
 const SHEET_NAME = "Blogs";
-const ADMIN_PASSCODE = "admin123";
+const ADMIN_PASSCODE = "dlima_admin_102026";
 
 function doGet(e) {
   const action = e.parameter.action || "getBlogs";
